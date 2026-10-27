@@ -1,0 +1,283 @@
+<div class="details-page-wrapper">
+  <div class="container details-container">
+    <!-- NAVIGATION STRIP -->
+    <div class="top-nav-bar">
+      <button type="button" class="btn btn-outline btn-sm back-nav-btn" (click)="goBack()">
+        <i class="fa-solid fa-arrow-left"></i> Back to Search Results
+      </button>
+
+      <div class="top-nav-actions" *ngIf="bus">
+        <button type="button" class="btn btn-outline btn-sm print-btn" (click)="printSummary()">
+          <i class="fa-solid fa-print"></i> Print Schedule
+        </button>
+      </div>
+    </div>
+
+    <!-- LOADING STATE -->
+    <div *ngIf="isLoading" class="loading-state card">
+      <div class="spinner"></div>
+      <p>Loading journey details from database for bus {{ busId }}...</p>
+    </div>
+
+    <!-- ERROR STATE -->
+    <div *ngIf="errorMessage && !isLoading" class="alert alert-danger details-error card">
+      <div class="error-icon">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div>
+        <h3>Bus Record Not Found</h3>
+        <p>{{ errorMessage }}</p>
+        <a routerLink="/results" class="btn btn-secondary btn-sm mt-3">
+          <i class="fa-solid fa-arrow-left"></i> Return to All Buses
+        </a>
+      </div>
+    </div>
+
+    <!-- MAIN BUS DETAILS VIEW -->
+    <div *ngIf="bus && !isLoading" class="details-content">
+      <!-- HEADER BANNER -->
+      <div class="card bus-header-banner">
+        <div class="banner-left">
+          <div class="banner-badge-group">
+            <span class="bus-id-tag">{{ bus.id }}</span>
+            <span class="badge badge-green">{{ bus.busType }}</span>
+            <span class="badge badge-blue" *ngIf="bus.frequency">{{ bus.frequency }}</span>
+          </div>
+          <h1 class="bus-title">{{ bus.busName }}</h1>
+          <p class="bus-operator-text">
+            <i class="fa-solid fa-shield-halved text-primary"></i> 
+            Operated by: <strong>{{ bus.operator || 'Regional Transport Corporation' }}</strong>
+          </p>
+        </div>
+
+        <div class="banner-right">
+          <div class="fare-highlight">
+            <span class="fare-tag">Total Fare</span>
+            <span class="fare-val"><span class="rupee">₹</span>{{ bus.fare }}</span>
+            <span class="fare-desc">Per Seat / Single Journey</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <!-- LEFT COLUMN: ROUTE, TIMINGS & STOPS -->
+        <div class="details-main-column">
+          <!-- TIMING & CORRIDOR CARD -->
+          <div class="card journey-card">
+            <div class="card-section-title">
+              <i class="fa-solid fa-route text-primary"></i>
+              <h2>Journey Schedule & Timings</h2>
+            </div>
+
+            <div class="journey-schedule-grid">
+              <div class="schedule-block departure">
+                <span class="schedule-time">{{ bus.departureTime }}</span>
+                <span class="schedule-city">{{ bus.startingCity }}</span>
+                <span class="schedule-sub">Central Bus Station (CBS)</span>
+              </div>
+
+              <div class="schedule-middle">
+                <div class="duration-pill">
+                  <i class="fa-regular fa-clock"></i> {{ bus.journeyDuration }}
+                </div>
+                <div class="timeline-visual">
+                  <div class="t-line"></div>
+                </div>
+                <span class="highway-pill" *ngIf="bus.viaRoute">{{ bus.viaRoute }}</span>
+              </div>
+
+              <div class="schedule-block arrival">
+                <span class="schedule-time">{{ bus.arrivalTime }}</span>
+                <span class="schedule-city">{{ bus.destinationCity }}</span>
+                <span class="schedule-sub">RTC Bus Stand / Terminal</span>
+              </div>
+            </div>
+
+            <!-- ROUTE SUMMARY STRIP -->
+            <div class="route-path-box">
+              <div class="route-path-header">
+                <i class="fa-solid fa-map-location-dot text-secondary"></i>
+                <strong>Full Route Stops:</strong>
+              </div>
+              <p class="route-stops-list">{{ bus.route }}</p>
+            </div>
+          </div>
+
+          <!-- BOARDING & DROPPING POINTS -->
+          <div class="card boarding-dropping-card">
+            <div class="card-section-title">
+              <i class="fa-solid fa-location-dot text-secondary"></i>
+              <h2>Boarding & Dropping Points</h2>
+            </div>
+
+            <div class="points-grid">
+              <!-- Boarding -->
+              <div class="points-column">
+                <h4 class="points-heading boarding-head">
+                  <i class="fa-solid fa-circle-dot"></i> Boarding Points in {{ bus.startingCity }}
+                </h4>
+                <ul class="points-list" *ngIf="bus.boardingPoints && bus.boardingPoints.length > 0">
+                  <li *ngFor="let bp of bus.boardingPoints">
+                    <i class="fa-solid fa-thumbtack text-primary"></i>
+                    <span>{{ bp }}</span>
+                  </li>
+                </ul>
+                <p *ngIf="!bus.boardingPoints || bus.boardingPoints.length === 0" class="text-muted">
+                  Main Depot Station Platform.
+                </p>
+              </div>
+
+              <!-- Dropping -->
+              <div class="points-column">
+                <h4 class="points-heading dropping-head">
+                  <i class="fa-solid fa-location-pin"></i> Dropping Points in {{ bus.destinationCity }}
+                </h4>
+                <ul class="points-list" *ngIf="bus.droppingPoints && bus.droppingPoints.length > 0">
+                  <li *ngFor="let dp of bus.droppingPoints">
+                    <i class="fa-solid fa-check text-secondary"></i>
+                    <span>{{ dp }}</span>
+                  </li>
+                </ul>
+                <p *ngIf="!bus.droppingPoints || bus.droppingPoints.length === 0" class="text-muted">
+                  Central RTC Complex Terminal.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- AMENITIES & FEATURES -->
+          <div class="card amenities-card">
+            <div class="card-section-title">
+              <i class="fa-solid fa-wand-magic-sparkles text-accent"></i>
+              <h2>Bus Amenities & Facilities</h2>
+            </div>
+
+            <div class="amenities-grid" *ngIf="bus.amenities && bus.amenities.length > 0">
+              <div class="amenity-item" *ngFor="let am of bus.amenities">
+                <div class="amenity-icon">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+                <span class="amenity-title">{{ am }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: SEATS, FARE BREAKDOWN & ADVISORY -->
+        <aside class="details-sidebar">
+          <!-- SEAT AVAILABILITY CARD -->
+          <div class="card seats-card">
+            <div class="card-section-title">
+              <i class="fa-solid fa-chair text-primary"></i>
+              <h3>Seat Availability</h3>
+            </div>
+
+            <div class="seat-stats-box">
+              <div class="seat-stat">
+                <span class="stat-number text-success">{{ bus.availableSeats }}</span>
+                <span class="stat-desc">Available</span>
+              </div>
+              <div class="stat-divider">/</div>
+              <div class="seat-stat">
+                <span class="stat-number">{{ bus.totalSeats }}</span>
+                <span class="stat-desc">Total Seats</span>
+              </div>
+            </div>
+
+            <!-- Seat Progress Bar -->
+            <div class="seat-progress-bar">
+              <div 
+                class="progress-fill" 
+                [style.width.%]="((bus.totalSeats - bus.availableSeats) / bus.totalSeats) * 100">
+              </div>
+            </div>
+            <div class="progress-labels">
+              <span>Booked: {{ bus.totalSeats - bus.availableSeats }}</span>
+              <span>Vacant: {{ bus.availableSeats }}</span>
+            </div>
+
+            <!-- INTERACTIVE SEAT LAYOUT SIMULATION -->
+            <div class="seat-matrix-wrapper">
+              <div class="matrix-header">
+                <span>Interactive Seat Layout (Simulation)</span>
+                <div class="seat-legend">
+                  <span class="legend-item"><span class="legend-box available"></span> Vacant</span>
+                  <span class="legend-item"><span class="legend-box booked"></span> Occupied</span>
+                  <span class="legend-item"><span class="legend-box selected"></span> Selected</span>
+                </div>
+              </div>
+
+              <div class="bus-interior">
+                <div class="driver-cabin">
+                  <i class="fa-solid fa-steering-wheel"></i> Driver Side
+                </div>
+                <div class="seats-grid-layout">
+                  <button 
+                    type="button"
+                    *ngFor="let s of seatMatrix" 
+                    class="seat-btn" 
+                    [class.booked]="!s.isAvailable"
+                    [class.selected]="s.isSelected"
+                    [disabled]="!s.isAvailable"
+                    (click)="toggleSeat(s)"
+                    title="Seat #{{ s.number }}">
+                    {{ s.number }}
+                  </button>
+                </div>
+              </div>
+
+              <div class="selected-seats-summary" *ngIf="getSelectedSeatCount() > 0">
+                <span>Selected Seats: <strong>{{ getSelectedSeatCount() }}</strong></span>
+                <span>Est. Total: <strong>₹{{ getSelectedSeatCount() * bus.fare }}</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- FARE BREAKDOWN CARD -->
+          <div class="card fare-breakdown-card">
+            <div class="card-section-title">
+              <i class="fa-solid fa-receipt text-secondary"></i>
+              <h3>Fare Summary</h3>
+            </div>
+
+            <div class="fare-rows">
+              <div class="fare-row">
+                <span>Base Transit Fare</span>
+                <span>₹{{ bus.fare - 25 }}</span>
+              </div>
+              <div class="fare-row">
+                <span>Passenger Amenities & Tolls</span>
+                <span>₹20</span>
+              </div>
+              <div class="fare-row">
+                <span>Reservation Service Fee</span>
+                <span>₹5</span>
+              </div>
+              <div class="fare-divider"></div>
+              <div class="fare-row total-fare-row">
+                <strong>Total Payable Amount</strong>
+                <strong class="text-primary font-bold">₹{{ bus.fare }}</strong>
+              </div>
+            </div>
+            <span class="official-tariff-pill">
+              <i class="fa-solid fa-circle-check"></i> Government Approved Tariff • No Surcharges
+            </span>
+          </div>
+
+          <!-- PASSENGER ADVISORY -->
+          <div class="card advisory-card">
+            <div class="card-section-title">
+              <i class="fa-solid fa-circle-info text-accent"></i>
+              <h3>Important Advisory</h3>
+            </div>
+            <ul class="advisory-list">
+              <li>Please arrive at the boarding platform 15 minutes prior to scheduled departure.</li>
+              <li>Carry a valid photo identification card (Aadhaar / Voter ID).</li>
+              <li>Schedules are subject to traffic conditions along the NH-44 highway.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

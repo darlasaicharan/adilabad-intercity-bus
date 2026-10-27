@@ -1,0 +1,228 @@
+<div class="about-page-wrapper">
+  <!-- ABOUT HEADER BANNER -->
+  <section class="about-header-banner">
+    <div class="container">
+      <div class="header-badge">
+        <i class="fa-solid fa-code"></i> Developed by Darla Sai Charan
+      </div>
+      <h1 class="header-title">About Adilabad Intercity Bus Service</h1>
+      <p class="header-subtitle">
+        Providing modern, accessible transit information, live timetables, and passenger services for the Adilabad district and regional corridors.
+      </p>
+    </div>
+  </section>
+
+  <div class="container about-content-container">
+    <!-- SECTION 1: PROJECT OBJECTIVE & BACKGROUND -->
+    <div class="card about-main-card">
+      <div class="section-tag">Project Overview</div>
+      <h2 class="content-title">Adilabad Intercity Bus Information Service</h2>
+      <p class="lead-text">
+        The <strong>Adilabad Intercity Bus Information Service</strong> is a full-stack web application conceived and developed by <strong>Darla Sai Charan</strong> to bridge the transit information divide for residents, students, healthcare travelers, and visitors in the historic district of Adilabad.
+      </p>
+
+      <div class="two-col-grid">
+        <div class="info-block">
+          <h3><i class="fa-solid fa-circle-question text-primary"></i> The Challenge</h3>
+          <p>
+            Adilabad is a pivotal district located in northern Telangana, serving as a gateway between Telangana and Maharashtra via National Highway 44 (NH-44). Commuters frequently travel to Hyderabad, Nirmal, Nizamabad, Karimnagar, and Nagpur. Historically, passengers relied on inquiry counters at Adilabad Central Bus Station (CBS) or scattered notices, leading to uncertainty regarding departure timings, fares, and bus categories.
+          </p>
+        </div>
+
+        <div class="info-block">
+          <h3><i class="fa-solid fa-circle-check text-secondary"></i> The Solution</h3>
+          <p>
+            This portal offers a centralized, digital window where passengers can instantly search bus services, compare fares, check journey durations, view intermediate stops, and assess seat availability without physical queues or third-party ticketing markups.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: HOW IT HELPS PASSENGERS -->
+    <section class="benefits-section">
+      <div class="section-header">
+        <span class="section-tag">Public Transit Impact</span>
+        <h2 class="section-title">How the Portal Helps Passengers</h2>
+        <p class="section-subtitle">
+          Designed with simplicity, readability, and speed so anyone in Adilabad can look up critical transit data in seconds.
+        </p>
+      </div>
+
+      <div class="benefits-grid">
+        <div class="card benefit-card">
+          <div class="benefit-icon bg-green">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <h3>Instant Route Search</h3>
+          <p>
+            Select starting and destination points with intelligent same-city validation to immediately find all matching scheduled services.
+          </p>
+        </div>
+
+        <div class="card benefit-card">
+          <div class="benefit-icon bg-blue">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+          </div>
+          <h3>Transparent Fares</h3>
+          <p>
+            Clear pricing displays in Indian Rupees (₹) for every category, from economical Express buses to premium Rajadhani AC and sleeper coaches.
+          </p>
+        </div>
+
+        <div class="card benefit-card">
+          <div class="benefit-icon bg-amber">
+            <i class="fa-solid fa-chair"></i>
+          </div>
+          <h3>Seat Availability Simulation</h3>
+          <p>
+            Visual real-time indicators and interactive seating map previews help passengers anticipate crowding and choose vacant buses.
+          </p>
+        </div>
+
+        <div class="card benefit-card">
+          <div class="benefit-icon bg-teal">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+          <h3>Complete Route Stops</h3>
+          <p>
+            Detailed listings of intermediate boarding and dropping locations, helping commuters boarding at highway bypasses or rural cross-roads.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: SYSTEM ARCHITECTURE & TECH STACK -->
+    <section class="tech-section">
+      <div class="section-header">
+        <span class="section-tag">System Architecture</span>
+        <h2 class="section-title">Full-Stack Technology Stack</h2>
+        <p class="section-subtitle">
+          Engineered using industry-standard open-source technologies adhering to modern modular patterns.
+        </p>
+      </div>
+
+      <!-- Architecture Diagram (Card) -->
+      <div class="card architecture-card">
+        <h3><i class="fa-solid fa-diagram-project text-primary"></i> Client-Server Communication Flow</h3>
+        <div class="arch-flow-diagram">
+          <div class="arch-node client-node">
+            <i class="fa-brands fa-angular"></i>
+            <strong>Angular Client (SPA)</strong>
+            <span>Browser Port 4200</span>
+            <small>Components & BusService</small>
+          </div>
+
+          <div class="arch-arrow">
+            <span class="arrow-label">HTTP GET (JSON)</span>
+            <div class="arrow-line">
+              <i class="fa-solid fa-right-long"></i>
+            </div>
+            <span class="arrow-label">JSON Response</span>
+          </div>
+
+          <div class="arch-node server-node">
+            <i class="fa-brands fa-node-js"></i>
+            <strong>Express.js API</strong>
+            <span>Node.js Port 3000</span>
+            <small>REST Router & CORS</small>
+          </div>
+
+          <div class="arch-arrow">
+            <span class="arrow-label">File I/O</span>
+            <div class="arrow-line">
+              <i class="fa-solid fa-right-long"></i>
+            </div>
+            <span class="arrow-label">JSON Array</span>
+          </div>
+
+          <div class="arch-node db-node">
+            <i class="fa-solid fa-database"></i>
+            <strong>buses.json</strong>
+            <span>Data Store</span>
+            <small>Bus Records & Schedules</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-cards-grid">
+        <div *ngFor="let t of techStack" class="card tech-card">
+          <div class="tech-card-header">
+            <div class="tech-icon-circle" [style.color]="t.color">
+              <i [class]="t.icon"></i>
+            </div>
+            <div>
+              <span class="tech-category">{{ t.category }}</span>
+              <h3 class="tech-name">{{ t.tech }}</h3>
+            </div>
+          </div>
+          <p class="tech-desc">{{ t.description }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: REST API SPECIFICATION -->
+    <div class="card api-docs-card">
+      <div class="section-tag">Backend Integration</div>
+      <h2 class="content-title">REST API Endpoints</h2>
+      <p class="lead-text">
+        The Express.js backend exposes clean RESTful endpoints returning structured JSON data:
+      </p>
+
+      <div class="table-responsive">
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Endpoint URL</th>
+              <th>Description</th>
+              <th>Sample Query</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="method-badge get">GET</span></td>
+              <td><code>/api/buses</code></td>
+              <td>Returns all available intercity bus schedules</td>
+              <td><code>http://localhost:3000/api/buses</code></td>
+            </tr>
+            <tr>
+              <td><span class="method-badge get">GET</span></td>
+              <td><code>/api/buses/search</code></td>
+              <td>Filters buses by starting city and destination city</td>
+              <td><code>/api/buses/search?from=Adilabad&to=Hyderabad</code></td>
+            </tr>
+            <tr>
+              <td><span class="method-badge get">GET</span></td>
+              <td><code>/api/buses/:id</code></td>
+              <td>Returns detailed journey data for a specific bus</td>
+              <td><code>/api/buses/TS-ADB-101</code></td>
+            </tr>
+            <tr>
+              <td><span class="method-badge get">GET</span></td>
+              <td><code>/api/cities</code></td>
+              <td>Returns unique list of serviced cities for search dropdowns</td>
+              <td><code>/api/cities</code></td>
+            </tr>
+            <tr>
+              <td><span class="method-badge get">GET</span></td>
+              <td><code>/api/health</code></td>
+              <td>Health-check endpoint for server monitoring</td>
+              <td><code>/api/health</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 5: CITIZEN CHARTER & PASSENGER ADVISORY -->
+    <div class="card advisory-charter-card">
+      <div class="disclaimer-header">
+        <i class="fa-solid fa-shield-halved text-success"></i>
+        <h3>Citizen Charter & Passenger Information Assurance</h3>
+      </div>
+      <p>
+        <strong>Transit Information Service by Darla Sai Charan:</strong> Adilabad Intercity Bus Information Service is dedicated to providing transparent, accurate, and accessible public transit data. All scheduled timings, approved fares, and route matrices reflect official operating timetables from Adilabad Central Bus Station (CBS). For counter reservations, concessional transit passes, or parcel bookings, passengers can visit CBS booking counters or contact the 24x7 passenger helpline at <strong>1800-425-0033</strong>.
+      </p>
+    </div>
+  </div>
+</div>

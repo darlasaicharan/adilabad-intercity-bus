@@ -1,0 +1,316 @@
+<div class="results-page-wrapper">
+  <!-- SEARCH MODIFIER BAR -->
+  <section class="search-modifier-bar">
+    <div class="container">
+      <form (ngSubmit)="updateQueryRoute()" class="modifier-form">
+        <div class="modifier-input-group">
+          <label><i class="fa-solid fa-location-dot text-primary"></i> From</label>
+          <select [(ngModel)]="fromCity" name="fromCity" class="modifier-select" required>
+            <option value="" disabled>From City</option>
+            <option *ngFor="let c of availableCities" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+
+        <button type="button" class="modifier-swap-btn" (click)="swapCities()" title="Swap cities">
+          <i class="fa-solid fa-arrow-right-arrow-left"></i>
+        </button>
+
+        <div class="modifier-input-group">
+          <label><i class="fa-solid fa-location-crosshairs text-secondary"></i> To</label>
+          <select [(ngModel)]="toCity" name="toCity" class="modifier-select" required>
+            <option value="" disabled>To City</option>
+            <option *ngFor="let c of availableCities" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+
+        <div class="modifier-input-group">
+          <label><i class="fa-regular fa-calendar text-accent"></i> Date</label>
+          <input type="date" [(ngModel)]="journeyDate" name="journeyDate" class="modifier-select modifier-date">
+        </div>
+
+        <button type="submit" class="btn btn-primary modifier-btn">
+          <i class="fa-solid fa-rotate"></i> Update Search
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <div class="container main-results-container">
+    <!-- BREADCRUMB / ROUTE SUMMARY -->
+    <div class="results-header-box">
+      <div>
+        <div class="route-badge-row">
+          <span class="badge badge-green" *ngIf="fromCity && toCity">
+            <i class="fa-solid fa-route"></i> Route: {{ fromCity }} ➔ {{ toCity }}
+          </span>
+          <span class="badge badge-blue" *ngIf="!fromCity || !toCity">
+            <i class="fa-solid fa-list"></i> Showing All Active Intercity Schedules
+          </span>
+          <span class="badge badge-amber" *ngIf="journeyDate">
+            <i class="fa-regular fa-calendar"></i> {{ journeyDate }}
+          </span>
+        </div>
+        <h1 class="results-title">
+          <span *ngIf="fromCity && toCity">Buses from {{ fromCity }} to {{ toCity }}</span>
+          <span *ngIf="!fromCity || !toCity">All Intercity Bus Schedules</span>
+        </h1>
+        <p class="results-subtitle" *ngIf="!isLoading">
+          Found <strong>{{ filteredBuses.length }}</strong> matching service(s) operated by RTC and verified intercity carriers.
+        </p>
+      </div>
+
+      <!-- VIEW TOGGLE & CONTROLS -->
+      <div class="results-controls">
+        <!-- Filter by Bus Type -->
+        <div class="control-item">
+          <label for="typeFilter">Type:</label>
+          <select id="typeFilter" [(ngModel)]="selectedTypeFilter" (change)="onFilterChange()" class="control-select">
+            <option value="ALL">All Categories</option>
+            <option value="AC">AC Services</option>
+            <option value="NON_AC">Non-AC</option>
+            <option value="SUPER_LUXURY">Super Luxury</option>
+            <option value="SLEEPER">Sleeper</option>
+          </select>
+        </div>
+
+        <!-- Sort By -->
+        <div class="control-item">
+          <label for="sortBy">Sort:</label>
+          <select id="sortBy" [(ngModel)]="selectedSortBy" (change)="onSortChange()" class="control-select">
+            <option value="DEPARTURE">Departure (Early First)</option>
+            <option value="FARE_ASC">Fare (Lowest First)</option>
+            <option value="FARE_DESC">Fare (Highest First)</option>
+            <option value="SEATS_DESC">Seats (Most Available)</option>
+          </select>
+        </div>
+
+        <!-- View Mode Buttons -->
+        <div class="view-toggle-group">
+          <button 
+            type="button" 
+            class="toggle-btn" 
+            [class.active]="viewMode === 'cards'" 
+            (click)="setViewMode('cards')"
+            title="Card View">
+            <i class="fa-solid fa-grip"></i>
+          </button>
+          <button 
+            type="button" 
+            class="toggle-btn" 
+            [class.active]="viewMode === 'table'" 
+            (click)="setViewMode('table')"
+            title="Table View">
+            <i class="fa-solid fa-table-list"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVER OFFLINE / ERROR STATE -->
+    <div *ngIf="errorMessage" class="alert alert-danger error-container">
+      <div class="error-icon">
+        <i class="fa-solid fa-server"></i>
+      </div>
+      <div class="error-content">
+        <h3>Server Connection Alert</h3>
+        <p>{{ errorMessage }}</p>
+        <div *ngIf="isBackendOffline" class="offline-guide">
+          <p><strong>Transit Server Connection Guidance:</strong></p>
+          <ol>
+            <li>Verify the transit data service is active:</li>
+            <code>cd backend && node app.js</code>
+            <li>Transit API Endpoint: <a href="http://localhost:3000/api/buses" target="_blank">http://localhost:3000/api/buses</a></li>
+          </ol>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" (click)="fetchBuses()">
+          <i class="fa-solid fa-rotate-right"></i> Reconnect
+        </button>
+      </div>
+    </div>
+
+    <!-- LOADING SPINNER -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading scheduled bus services and live platform data...</p>
+    </div>
+
+    <!-- NO BUSES FOUND (EMPTY STATE) -->
+    <div *ngIf="!isLoading && !errorMessage && filteredBuses.length === 0" class="card empty-state-card">
+      <div class="empty-icon-wrap">
+        <i class="fa-solid fa-bus-simple"></i>
+      </div>
+      <h2>No Direct Buses Found</h2>
+      <p class="empty-text">
+        We could not locate scheduled buses matching <strong>{{ fromCity }}</strong> to <strong>{{ toCity }}</strong> for the selected criteria.
+      </p>
+      <div class="empty-suggestions">
+        <p><strong>Helpful Suggestions:</strong></p>
+        <ul>
+          <li>Try swapping the route (e.g., {{ toCity }} to {{ fromCity }}).</li>
+          <li>Choose Adilabad as either the starting point or destination.</li>
+          <li>Clear specific bus category filters if active.</li>
+        </ul>
+      </div>
+      <div class="empty-actions">
+        <button type="button" class="btn btn-secondary" (click)="swapCities()">
+          <i class="fa-solid fa-arrow-right-arrow-left"></i> Swap Direction ({{ toCity }} ➔ {{ fromCity }})
+        </button>
+        <a routerLink="/search" class="btn btn-outline">
+          <i class="fa-solid fa-sliders"></i> Modify Search Form
+        </a>
+      </div>
+    </div>
+
+    <!-- 1. CARD VIEW -->
+    <div *ngIf="!isLoading && !errorMessage && filteredBuses.length > 0 && viewMode === 'cards'" class="bus-cards-list">
+      <div *ngFor="let bus of filteredBuses" class="card bus-card">
+        <!-- Top Row: ID, Operator, Bus Name & Bus Type -->
+        <div class="bus-card-top">
+          <div class="bus-identity">
+            <div class="bus-badge-row">
+              <span class="bus-id-badge">{{ bus.id }}</span>
+              <span class="badge badge-green">{{ bus.busType }}</span>
+              <span class="operator-tag" *ngIf="bus.operator">
+                <i class="fa-solid fa-building-shield"></i> {{ bus.operator }}
+              </span>
+            </div>
+            <h3 class="bus-name-title">{{ bus.busName }}</h3>
+          </div>
+
+          <div class="bus-fare-box">
+            <span class="fare-label">Per Passenger Fare</span>
+            <span class="fare-amount"><span class="rupee-symbol">₹</span>{{ bus.fare }}</span>
+            <span class="fare-note">Taxes & Tolls Included</span>
+          </div>
+        </div>
+
+        <!-- Middle Row: Timing Corridor Timeline -->
+        <div class="bus-timeline-grid">
+          <!-- Departure -->
+          <div class="timeline-point departure-point">
+            <span class="point-time">{{ bus.departureTime }}</span>
+            <span class="point-city"><i class="fa-solid fa-circle-dot text-primary"></i> {{ bus.startingCity }}</span>
+            <span class="point-hub">Central Bus Station</span>
+          </div>
+
+          <!-- Duration & Route Path -->
+          <div class="timeline-middle">
+            <span class="duration-badge">
+              <i class="fa-regular fa-clock"></i> {{ bus.journeyDuration }}
+            </span>
+            <div class="timeline-visual-line">
+              <div class="line-dot start"></div>
+              <div class="line-bar">
+                <i class="fa-solid fa-bus line-bus-icon"></i>
+              </div>
+              <div class="line-dot end"></div>
+            </div>
+            <span class="via-text" *ngIf="bus.viaRoute">{{ bus.viaRoute }}</span>
+          </div>
+
+          <!-- Arrival -->
+          <div class="timeline-point arrival-point">
+            <span class="point-time">{{ bus.arrivalTime }}</span>
+            <span class="point-city"><i class="fa-solid fa-location-dot text-secondary"></i> {{ bus.destinationCity }}</span>
+            <span class="point-hub">RTC Complex / Main Station</span>
+          </div>
+        </div>
+
+        <!-- Route Stops Information -->
+        <div class="bus-route-strip">
+          <span class="route-strip-label"><i class="fa-solid fa-map-pin"></i> Route:</span>
+          <span class="route-strip-text">{{ bus.route }}</span>
+        </div>
+
+        <!-- Bottom Row: Seats Left & Action -->
+        <div class="bus-card-bottom">
+          <div class="seats-info-box">
+            <span class="badge" [ngClass]="getSeatBadgeClass(bus.availableSeats)">
+              <i class="fa-solid fa-chair"></i> {{ bus.availableSeats }} Seats Left
+            </span>
+            <span class="seats-total-text">out of {{ bus.totalSeats }} total</span>
+          </div>
+
+          <div class="amenities-preview" *ngIf="bus.amenities && bus.amenities.length > 0">
+            <span class="amenity-chip" *ngFor="let a of bus.amenities.slice(0, 3)">
+              <i class="fa-solid fa-check"></i> {{ a }}
+            </span>
+            <span class="amenity-chip more" *ngIf="bus.amenities.length > 3">
+              +{{ bus.amenities.length - 3 }} more
+            </span>
+          </div>
+
+          <div class="bus-action-box">
+            <button type="button" class="btn btn-primary btn-sm view-details-btn" (click)="viewDetails(bus.id)">
+              <span>View Details</span>
+              <i class="fa-solid fa-circle-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TABLE VIEW -->
+    <div *ngIf="!isLoading && !errorMessage && filteredBuses.length > 0 && viewMode === 'table'" class="card table-container-card">
+      <div class="table-responsive">
+        <table class="bus-data-table">
+          <thead>
+            <tr>
+              <th>Bus Service</th>
+              <th>Category</th>
+              <th>Corridor & Route</th>
+              <th>Departure</th>
+              <th>Arrival</th>
+              <th>Duration</th>
+              <th>Seats</th>
+              <th>Fare</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bus of filteredBuses">
+              <td>
+                <div class="table-bus-info">
+                  <span class="table-bus-id">{{ bus.id }}</span>
+                  <span class="table-bus-name">{{ bus.busName }}</span>
+                  <span class="table-operator">{{ bus.operator }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="badge badge-green">{{ bus.busType }}</span>
+              </td>
+              <td>
+                <div class="table-route-info">
+                  <strong>{{ bus.startingCity }} ➔ {{ bus.destinationCity }}</strong>
+                  <span class="table-route-summary">{{ bus.route }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="table-time">{{ bus.departureTime }}</span>
+              </td>
+              <td>
+                <span class="table-time">{{ bus.arrivalTime }}</span>
+              </td>
+              <td>
+                <span class="table-duration">{{ bus.journeyDuration }}</span>
+              </td>
+              <td>
+                <span class="badge" [ngClass]="getSeatBadgeClass(bus.availableSeats)">
+                  {{ bus.availableSeats }} / {{ bus.totalSeats }}
+                </span>
+              </td>
+              <td>
+                <span class="table-fare">₹{{ bus.fare }}</span>
+              </td>
+              <td>
+                <button type="button" class="btn btn-secondary btn-sm" (click)="viewDetails(bus.id)">
+                  Details
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

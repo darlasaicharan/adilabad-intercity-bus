@@ -1,0 +1,162 @@
+<!-- TOP OFFICIAL TRANSIT INFORMATION STRIP -->
+<div class="top-announcement-bar">
+  <div class="container announcement-content">
+    <div class="announcement-left">
+      <span class="govt-emblem-text">
+        <i class="fa-solid fa-code"></i> Developed by Darla Sai Charan • Adilabad Transit Service
+      </span>
+      <span class="announcement-divider">|</span>
+      <span class="announcement-desc">
+        <i class="fa-solid fa-bullhorn"></i> Official Intercity Express & Deluxe Bus Information Portal
+      </span>
+    </div>
+    <div class="announcement-right">
+      <span class="helpline-badge">
+        <i class="fa-solid fa-phone-volume"></i> 24x7 Passenger Helpline: <strong>1800-425-0033</strong>
+      </span>
+      <span class="api-status-pill" [class.connected]="isBackendConnected">
+        <span class="status-dot"></span>
+        {{ isBackendConnected ? 'Transit Data: Online' : 'Transit Data: Reconnecting' }}
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN RESPONSIVE NAVBAR -->
+<header class="main-header">
+  <div class="container navbar-container">
+    <!-- Brand / Logo -->
+    <a routerLink="/" class="brand-logo" (click)="closeMobileMenu()">
+      <div class="logo-icon-box">
+        <i class="fa-solid fa-bus-simple"></i>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">Adilabad Intercity</span>
+        <span class="brand-subtitle">Bus Information Service</span>
+      </div>
+    </a>
+
+    <!-- Mobile Hamburger Button -->
+    <button 
+      type="button" 
+      class="mobile-menu-toggle" 
+      (click)="toggleMobileMenu()" 
+      [attr.aria-expanded]="isMobileMenuOpen"
+      aria-label="Toggle navigation menu">
+      <i class="fa-solid" [ngClass]="isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'"></i>
+    </button>
+
+    <!-- Navigation Links -->
+    <nav class="nav-links" [class.open]="isMobileMenuOpen">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()" class="nav-item">
+        <i class="fa-solid fa-house"></i> Home
+      </a>
+      <a routerLink="/search" routerLinkActive="active" (click)="closeMobileMenu()" class="nav-item">
+        <i class="fa-solid fa-magnifying-glass"></i> Search Buses
+      </a>
+      <a routerLink="/results" routerLinkActive="active" (click)="closeMobileMenu()" class="nav-item">
+        <i class="fa-solid fa-table-list"></i> All Schedules
+      </a>
+      <a routerLink="/about" routerLinkActive="active" (click)="closeMobileMenu()" class="nav-item">
+        <i class="fa-solid fa-circle-info"></i> About
+      </a>
+      <a routerLink="/search" (click)="closeMobileMenu()" class="btn btn-primary btn-sm nav-cta-btn">
+        <i class="fa-solid fa-ticket"></i> Find Bus
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- MAIN CONTENT ROUTER OUTLET -->
+<main class="main-content-area">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- PROFESSIONAL SITE FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Col 1: Portal Information -->
+      <div class="footer-col brand-col">
+        <div class="footer-brand">
+          <div class="footer-logo-icon">
+            <i class="fa-solid fa-bus-simple"></i>
+          </div>
+          <div>
+            <h3 class="footer-title">Adilabad Intercity</h3>
+            <span class="footer-tagline">Bus Information Service</span>
+          </div>
+        </div>
+        <p class="footer-about-text">
+          The official regional passenger transit directory providing comprehensive schedules, approved fares, intermediate stops, and real-time seat availability for bus services connecting Adilabad with regional hubs.
+        </p>
+        <div class="footer-official-badge">
+          <i class="fa-solid fa-shield-halved"></i> Official Adilabad Regional Transit Directory
+        </div>
+      </div>
+
+      <!-- Col 2: Navigation Links -->
+      <div class="footer-col">
+        <h4 class="footer-heading">Quick Navigation</h4>
+        <ul class="footer-links">
+          <li><a routerLink="/"><i class="fa-solid fa-angle-right"></i> Home Overview</a></li>
+          <li><a routerLink="/search"><i class="fa-solid fa-angle-right"></i> Search Buses by City</a></li>
+          <li><a routerLink="/results"><i class="fa-solid fa-angle-right"></i> All Bus Schedules</a></li>
+          <li><a routerLink="/about"><i class="fa-solid fa-angle-right"></i> About Transit Network</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Key Corridors from Adilabad -->
+      <div class="footer-col">
+        <h4 class="footer-heading">Major Bus Routes</h4>
+        <ul class="footer-links">
+          <li><a routerLink="/results" [queryParams]="{from: 'Adilabad', to: 'Hyderabad'}"><i class="fa-solid fa-route"></i> Adilabad ➔ Hyderabad (NH-44)</a></li>
+          <li><a routerLink="/results" [queryParams]="{from: 'Adilabad', to: 'Nirmal'}"><i class="fa-solid fa-route"></i> Adilabad ➔ Nirmal</a></li>
+          <li><a routerLink="/results" [queryParams]="{from: 'Adilabad', to: 'Nizamabad'}"><i class="fa-solid fa-route"></i> Adilabad ➔ Nizamabad</a></li>
+          <li><a routerLink="/results" [queryParams]="{from: 'Adilabad', to: 'Karimnagar'}"><i class="fa-solid fa-route"></i> Adilabad ➔ Karimnagar</a></li>
+          <li><a routerLink="/results" [queryParams]="{from: 'Adilabad', to: 'Mancherial'}"><i class="fa-solid fa-route"></i> Adilabad ➔ Mancherial</a></li>
+          <li><a routerLink="/results" [queryParams]="{from: 'Adilabad', to: 'Nagpur'}"><i class="fa-solid fa-route"></i> Adilabad ➔ Nagpur (Interstate)</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Passenger Information & Help Desk -->
+      <div class="footer-col">
+        <h4 class="footer-heading">Passenger Help Desk</h4>
+        <div class="helpdesk-info">
+          <p class="helpdesk-item">
+            <i class="fa-solid fa-building"></i>
+            <span><strong>Central Bus Station (CBS):</strong> Bus Station Road, Adilabad, Telangana - 504001</span>
+          </p>
+          <p class="helpdesk-item">
+            <i class="fa-solid fa-phone-volume"></i>
+            <span><strong>24x7 Transit Helpline:</strong> 1800-425-0033</span>
+          </p>
+          <p class="helpdesk-item">
+            <i class="fa-solid fa-clock"></i>
+            <span><strong>Operating Hours:</strong> Round-the-Clock Services</span>
+          </p>
+          <p class="helpdesk-item">
+            <i class="fa-solid fa-envelope"></i>
+            <span><strong>Passenger Support:</strong> support@transit.adilabad.gov.in</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSENGER ADVISORY STRIP -->
+    <div class="footer-disclaimer-strip">
+      <i class="fa-solid fa-circle-info text-info"></i>
+      <span>
+        <strong>Passenger Advisory:</strong> Please report to your designated platform at Adilabad Central Bus Station (CBS) at least 15 minutes prior to scheduled departure. Concession passes and digital tickets are accepted on all applicable services.
+      </span>
+    </div>
+
+    <!-- BOTTOM COPYRIGHT -->
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} Adilabad Intercity Bus Information Service. Developed by <strong>Darla Sai Charan</strong>.</p>
+      <div class="footer-social-meta">
+        <span>Created & Engineered by Darla Sai Charan • Adilabad Region</span>
+      </div>
+    </div>
+  </div>
+</footer>

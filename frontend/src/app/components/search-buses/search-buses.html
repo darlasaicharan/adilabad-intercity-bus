@@ -1,0 +1,174 @@
+<div class="search-page-wrapper">
+  <div class="search-page-header">
+    <div class="container">
+      <div class="header-badge">
+        <i class="fa-solid fa-magnifying-glass"></i> Interactive Bus Lookup
+      </div>
+      <h1 class="header-title">Search Intercity Bus Services</h1>
+      <p class="header-subtitle">
+        Find schedules, seat availability, and fare information for state and intercity buses connecting Adilabad with major hubs.
+      </p>
+    </div>
+  </div>
+
+  <div class="container search-content-container">
+    <div class="search-layout">
+      <!-- Main Search Card -->
+      <div class="card search-box-card">
+        <div class="card-inner-header">
+          <div class="title-with-icon">
+            <i class="fa-solid fa-compass text-primary"></i>
+            <div>
+              <h2>Plan Your Journey</h2>
+              <p>Select your starting point, destination, and travel date</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Validation Error Alert -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Validation Error:</strong> {{ errorMessage }}
+          </div>
+        </div>
+
+        <form (ngSubmit)="submitSearch()" class="search-main-form">
+          <div class="form-grid">
+            <!-- Starting City -->
+            <div class="form-group">
+              <label class="form-label" for="fromCitySelect">
+                <i class="fa-solid fa-location-dot text-primary"></i>
+                Starting City (From)
+              </label>
+              <div class="input-wrapper">
+                <select 
+                  id="fromCitySelect"
+                  class="form-control" 
+                  [(ngModel)]="fromCity" 
+                  name="fromCity"
+                  (change)="validateInputs()"
+                  [disabled]="isLoadingCities"
+                  required>
+                  <option value="" disabled>Select Starting Point</option>
+                  <option *ngFor="let city of availableCities" [value]="city">{{ city }}</option>
+                </select>
+              </div>
+              <span class="input-hint">Adilabad CBS or connecting hubs</span>
+            </div>
+
+            <!-- Swap Cities Button -->
+            <div class="swap-column">
+              <button 
+                type="button" 
+                class="btn-swap-circular" 
+                (click)="swapCities()"
+                title="Swap From and To locations">
+                <i class="fa-solid fa-arrows-rotate"></i>
+              </button>
+            </div>
+
+            <!-- Destination City -->
+            <div class="form-group">
+              <label class="form-label" for="toCitySelect">
+                <i class="fa-solid fa-location-crosshairs text-secondary"></i>
+                Destination City (To)
+              </label>
+              <div class="input-wrapper">
+                <select 
+                  id="toCitySelect"
+                  class="form-control" 
+                  [(ngModel)]="toCity" 
+                  name="toCity"
+                  (change)="validateInputs()"
+                  [disabled]="isLoadingCities"
+                  required>
+                  <option value="" disabled>Select Destination</option>
+                  <option *ngFor="let city of availableCities" [value]="city">{{ city }}</option>
+                </select>
+              </div>
+              <span class="input-hint">Capital, neighboring districts or interstate</span>
+            </div>
+
+            <!-- Journey Date -->
+            <div class="form-group date-group">
+              <label class="form-label" for="journeyDateInput">
+                <i class="fa-regular fa-calendar-check text-accent"></i>
+                Journey Date
+              </label>
+              <div class="input-wrapper">
+                <input 
+                  type="date" 
+                  id="journeyDateInput"
+                  class="form-control" 
+                  [(ngModel)]="journeyDate" 
+                  [min]="minDate"
+                  name="journeyDate" 
+                  (change)="validateInputs()"
+                  required>
+              </div>
+              <span class="input-hint">Date of travel for departure scheduling</span>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-submit-row">
+            <button type="submit" class="btn btn-primary btn-lg submit-btn">
+              <i class="fa-solid fa-magnifying-glass"></i> Search Available Buses
+            </button>
+          </div>
+        </form>
+
+        <!-- Quick Route Chips -->
+        <div class="quick-routes-section">
+          <span class="quick-routes-label">
+            <i class="fa-solid fa-bolt text-accent"></i> Quick Select Popular Routes:
+          </span>
+          <div class="routes-chips-wrap">
+            <button 
+              type="button" 
+              *ngFor="let r of popularRoutes" 
+              class="route-chip"
+              (click)="selectQuickRoute(r)">
+              {{ r.label }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Sidebar -->
+      <aside class="search-sidebar">
+        <div class="card sidebar-card tips-card">
+          <div class="sidebar-card-title">
+            <i class="fa-solid fa-lightbulb text-accent"></i>
+            <h3>Adilabad Transit Tips</h3>
+          </div>
+          <ul class="transit-tips-list">
+            <li>
+              <strong>Major Depots:</strong> Adilabad Central Bus Station (CBS) is the central boarding point for all long-distance express services.
+            </li>
+            <li>
+              <strong>NH-44 Express Highway:</strong> Direct buses to Hyderabad and Nagpur operate via the high-speed NH-44 corridor.
+            </li>
+            <li>
+              <strong>Return Journeys:</strong> Frequent return services operate daily from Hyderabad MGBS/JBS, Nirmal, and Nizamabad back to Adilabad.
+            </li>
+            <li>
+              <strong>Advance Information:</strong> Check seat counts and bus categories (Rajadhani AC, Super Luxury, Express) to plan comfortably.
+            </li>
+          </ul>
+        </div>
+
+        <div class="card sidebar-card advisory-card">
+          <div class="sidebar-card-title">
+            <i class="fa-solid fa-circle-info text-primary"></i>
+            <h3>Passenger Advisory</h3>
+          </div>
+          <p class="advisory-note-text">
+            Please report to Adilabad Central Bus Station (CBS) boarding platforms 15 minutes before the departure time. Senior citizen concessions and student transit passes are valid on all applicable government scheduled services.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>

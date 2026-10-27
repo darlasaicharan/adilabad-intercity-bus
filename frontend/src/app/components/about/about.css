@@ -1,0 +1,368 @@
+/* ==========================================================================
+   About Component Styles
+   ========================================================================== */
+
+.about-page-wrapper {
+  background-color: var(--color-bg);
+  min-height: calc(100vh - 160px);
+  padding-bottom: 4rem;
+}
+
+.about-header-banner {
+  background: linear-gradient(135deg, #09472e 0%, #0f766e 55%, #0284c7 100%);
+  color: #ffffff;
+  padding: 3.5rem 0;
+  margin-bottom: 2.5rem;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-title {
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.header-subtitle {
+  font-size: 1.1rem;
+  color: #e2e8f0;
+  max-width: 680px;
+}
+
+.about-content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-top: -1.5rem;
+}
+
+/* Main Card */
+.about-main-card {
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.content-title {
+  font-size: 1.85rem;
+  margin-bottom: 1rem;
+  color: var(--color-text-main);
+}
+
+.lead-text {
+  font-size: 1.05rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin-bottom: 2rem;
+}
+
+.two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.info-block {
+  background: var(--color-bg);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.info-block h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-block p {
+  font-size: 0.925rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* Benefits Section */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.benefit-card {
+  padding: 1.75rem;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  transition: var(--transition);
+}
+
+.benefit-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-hover);
+}
+
+.benefit-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.bg-green { background: #dcfce7; color: #15803d; }
+.bg-blue  { background: #e0f2fe; color: #0284c7; }
+.bg-amber { background: #fef3c7; color: #d97706; }
+.bg-teal  { background: #ccfbf1; color: #0f766e; }
+
+.benefit-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-main);
+}
+
+.benefit-card p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* Architecture Card & Diagram */
+.architecture-card {
+  padding: 2rem;
+  background: #ffffff;
+  margin-bottom: 2rem;
+  border-radius: var(--radius-xl);
+}
+
+.architecture-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.arch-flow-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+}
+
+.arch-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  min-width: 170px;
+  box-shadow: var(--shadow-sm);
+}
+
+.arch-node i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.client-node i { color: #dd0031; }
+.server-node i { color: #68a063; }
+.db-node i { color: #0284c7; }
+
+.arch-node strong {
+  font-size: 0.95rem;
+  color: var(--color-text-main);
+}
+
+.arch-node span {
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  margin: 0.2rem 0;
+}
+
+.arch-node small {
+  font-size: 0.7rem;
+  color: var(--color-text-light);
+}
+
+.arch-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.arrow-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.arrow-line {
+  color: var(--color-secondary);
+  font-size: 1.25rem;
+}
+
+/* Tech Cards Grid */
+.tech-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.tech-card {
+  padding: 1.75rem;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+}
+
+.tech-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tech-icon-circle {
+  font-size: 2rem;
+}
+
+.tech-category {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  font-weight: 600;
+}
+
+.tech-name {
+  font-size: 1.15rem;
+  color: var(--color-text-main);
+}
+
+.tech-desc {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* API Docs Table */
+.api-docs-card {
+  padding: 2.25rem;
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+}
+
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.api-table th {
+  background: var(--color-bg);
+  text-align: left;
+  padding: 0.85rem 1rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.api-table td {
+  padding: 0.95rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.method-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.method-badge.get {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.api-table code {
+  background: #f1f5f9;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  color: #0f172a;
+  font-size: 0.8rem;
+}
+
+/* Citizen Charter & Advisory Card */
+.advisory-charter-card {
+  padding: 1.75rem;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-lg);
+}
+
+.disclaimer-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.advisory-charter-card .disclaimer-header h3 {
+  font-size: 1.15rem;
+  color: #065f46;
+}
+
+.advisory-charter-card p {
+  font-size: 0.925rem;
+  color: #1e3a2b;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .two-col-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header-title {
+    font-size: 2rem;
+  }
+
+  .arch-flow-diagram {
+    flex-direction: column;
+  }
+
+  .arrow-line {
+    transform: rotate(90deg);
+  }
+}

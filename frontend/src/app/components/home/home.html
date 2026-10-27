@@ -1,0 +1,237 @@
+<!-- HERO SECTION -->
+<section class="hero-section">
+  <div class="container hero-container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fa-solid fa-shield-halved"></i> Official Regional Public Transit Portal
+      </div>
+      <h1 class="hero-title">
+        Adilabad Intercity <br>
+        <span class="gradient-text">Bus Information Service</span>
+      </h1>
+      <p class="hero-description">
+        Access comprehensive bus schedules, departure times, ticket fares, route stops, and real-time seat availability for intercity journeys connecting Adilabad across Telangana and interstate corridors.
+      </p>
+
+      <div class="hero-actions">
+        <a routerLink="/search" class="btn btn-primary btn-lg">
+          <i class="fa-solid fa-magnifying-glass"></i> Search Buses
+        </a>
+        <a routerLink="/results" class="btn btn-outline btn-lg hero-btn-outline">
+          <i class="fa-solid fa-list-check"></i> View All Routes
+        </a>
+      </div>
+
+      <div class="hero-trust">
+        <div class="trust-item">
+          <i class="fa-solid fa-shield-halved text-success"></i>
+          <span>Verified Daily Timetables</span>
+        </div>
+        <div class="trust-item">
+          <i class="fa-solid fa-indian-rupee-sign text-accent"></i>
+          <span>Standard Fares</span>
+        </div>
+        <div class="trust-item">
+          <i class="fa-solid fa-clock text-info"></i>
+          <span>Scheduled Timings</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK SEARCH CARD IN HERO -->
+    <div class="hero-card-wrapper">
+      <div class="card search-card-hero">
+        <div class="search-card-header">
+          <div class="header-icon-box">
+            <i class="fa-solid fa-bus-simple"></i>
+          </div>
+          <div>
+            <h3 class="search-card-title">Find Bus Services</h3>
+            <p class="search-card-subtitle">Real-time schedule & seat lookup</p>
+          </div>
+        </div>
+
+        <!-- Validation Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-danger search-alert">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <form (ngSubmit)="handleSearch()" class="search-form-hero">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fa-solid fa-location-dot text-primary"></i> Starting City (From)
+            </label>
+            <select class="form-control" [(ngModel)]="fromCity" name="fromCity" required>
+              <option value="" disabled>Select Starting City</option>
+              <option *ngFor="let city of availableCities" [value]="city">{{ city }}</option>
+            </select>
+          </div>
+
+          <div class="swap-row">
+            <button type="button" class="btn-swap" (click)="swapCities()" title="Swap Starting and Destination cities">
+              <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fa-solid fa-location-crosshairs text-secondary"></i> Destination City (To)
+            </label>
+            <select class="form-control" [(ngModel)]="toCity" name="toCity" required>
+              <option value="" disabled>Select Destination City</option>
+              <option *ngFor="let city of availableCities" [value]="city">{{ city }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fa-regular fa-calendar-days text-accent"></i> Journey Date
+            </label>
+            <input type="date" class="form-control" [(ngModel)]="journeyDate" name="journeyDate" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block search-submit-btn">
+            <i class="fa-solid fa-magnifying-glass"></i> Check Bus Timings & Fares
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK STATS SECTION -->
+<section class="stats-strip">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Major Cities Connected</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">20+</div>
+        <div class="stat-label">Daily Intercity Runs</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">₹115</div>
+        <div class="stat-label">Starting Fares from Adilabad</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Free Public Transit Info</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POPULAR DESTINATIONS SECTION -->
+<section class="popular-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Key Intercity Corridors</span>
+      <h2 class="section-title">Popular Destinations from Adilabad</h2>
+      <p class="section-subtitle">
+        Direct express and luxury connections from Adilabad Central Bus Stand to major economic and educational centers.
+      </p>
+    </div>
+
+    <div class="destinations-grid">
+      <div *ngFor="let dest of popularDestinations" class="card dest-card">
+        <div class="dest-card-header">
+          <div class="dest-icon-circle">
+            <i class="fa-solid {{ dest.icon }}"></i>
+          </div>
+          <div>
+            <h3 class="dest-city-name">{{ dest.city }}</h3>
+            <span class="dest-tagline">{{ dest.tagline }}</span>
+          </div>
+        </div>
+
+        <p class="dest-description">{{ dest.description }}</p>
+
+        <div class="dest-metrics">
+          <div class="metric-item">
+            <span class="metric-label"><i class="fa-solid fa-road"></i> Distance</span>
+            <span class="metric-val">{{ dest.distance }}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label"><i class="fa-regular fa-clock"></i> Duration</span>
+            <span class="metric-val">{{ dest.duration }}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label"><i class="fa-solid fa-ticket"></i> Fare From</span>
+            <span class="metric-val font-bold text-primary">₹{{ dest.minFare }}</span>
+          </div>
+        </div>
+
+        <div class="dest-bus-types">
+          <span *ngFor="let type of dest.busTypes" class="badge badge-green">{{ type }}</span>
+        </div>
+
+        <div class="dest-card-footer">
+          <button (click)="quickSearch(dest.city)" class="btn btn-secondary btn-sm dest-btn">
+            <span>Find Buses to {{ dest.city }}</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADILABAD DISTRICT TRANSIT SIGNIFICANCE SECTION -->
+<section class="transit-context-section">
+  <div class="container">
+    <div class="context-grid">
+      <div class="context-info">
+        <span class="section-tag">District Transit Importance</span>
+        <h2 class="section-title">Why Adilabad Intercity Connectivity Matters</h2>
+        <p class="context-lead">
+          Adilabad, nestled in the northern gateway of Telangana, bordered by the Penganga and Godavari river basins, serves as a vital arterial hub linking tribal settlements, agrarian markets, educational aspirants, and medical travelers.
+        </p>
+        <div class="feature-bullets">
+          <div class="bullet-item">
+            <div class="bullet-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div>
+              <strong>NH-44 Super Corridor</strong>
+              <p>Direct 4-lane expressway connectivity connecting Adilabad with Hyderabad, Kamareddy, and Nagpur.</p>
+            </div>
+          </div>
+          <div class="bullet-item">
+            <div class="bullet-icon"><i class="fa-solid fa-users"></i></div>
+            <div>
+              <strong>Student & Commuter Support</strong>
+              <p>Crucial daily timetable visibility for university students commuting to Hyderabad and Karimnagar.</p>
+            </div>
+          </div>
+          <div class="bullet-item">
+            <div class="bullet-icon"><i class="fa-solid fa-hospital"></i></div>
+            <div>
+              <strong>Medical & Commercial Links</strong>
+              <p>Reliable schedules to multi-specialty healthcare and commercial centers in Nizamabad and Nirmal.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="context-cta-card">
+        <div class="cta-inner">
+          <div class="cta-badge">Passenger Services</div>
+          <h3>Adilabad CBS Transit Hub</h3>
+          <p>
+            Serving thousands of commuters and travelers daily with scheduled express, deluxe, and super luxury intercity services connecting Adilabad across Telangana and neighboring Maharashtra hubs.
+          </p>
+          <ul class="cta-specs">
+            <li><i class="fa-solid fa-check text-success"></i> Real-time Timetable & Departure Updates</li>
+            <li><i class="fa-solid fa-check text-success"></i> Government Approved Fare Matrix</li>
+            <li><i class="fa-solid fa-check text-success"></i> Live Platform & Seat Availability Indicators</li>
+            <li><i class="fa-solid fa-check text-success"></i> 24x7 Station Enquiry Desk & Traveler Helpline</li>
+          </ul>
+          <a routerLink="/search" class="btn btn-primary btn-block">
+            <i class="fa-solid fa-magnifying-glass"></i> Search Intercity Buses Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

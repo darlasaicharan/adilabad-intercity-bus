@@ -1,0 +1,25 @@
+{
+  "name": "adilabad-intercity-bus-backend",
+  "version": "1.0.0",
+  "description": "REST API backend for Adilabad Intercity Bus Information Service",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "test:api": "node test-api.js"
+  },
+  "keywords": [
+    "adilabad",
+    "bus",
+    "intercity",
+    "express",
+    "nodejs",
+    "rest-api"
+  ],
+  "author": "Darla Sai Charan",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
